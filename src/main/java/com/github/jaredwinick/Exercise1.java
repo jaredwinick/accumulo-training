@@ -10,6 +10,10 @@ import org.apache.accumulo.core.client.Instance;
 import org.apache.accumulo.core.client.ZooKeeperInstance;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
 import org.apache.accumulo.minicluster.MiniAccumuloCluster;
+import org.apache.accumulo.minicluster.MiniAccumuloConfig;
+import org.apache.log4j.BasicConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
 
@@ -19,6 +23,8 @@ import com.google.common.io.Files;
  *
  */
 public class Exercise1 {
+	
+	private Logger log = LoggerFactory.getLogger(Exercise1.class);
 	
 	public void run() throws IOException, InterruptedException, AccumuloException, AccumuloSecurityException {
 		
@@ -30,7 +36,7 @@ public class Exercise1 {
 		// Connect to the Accumulo instance and print out its name
 		Instance instance = new ZooKeeperInstance(accumulo.getInstanceName(), accumulo.getZooKeepers());
 		Connector connector = instance.getConnector(ExerciseConstants.USER, new PasswordToken(ExerciseConstants.PASSWORD));
-		System.out.println("Running with Instance Name: " + instance.getInstanceName());
+		log.info("Running with Instance Name: " + instance.getInstanceName());
 		
 		// Clean up
 		accumulo.stop();
@@ -38,8 +44,8 @@ public class Exercise1 {
 	}
 	
 	public static void main(String[] args) throws IOException, InterruptedException, AccumuloException, AccumuloSecurityException {
-		Exercise1 exercise1 = new Exercise1();
-		exercise1.run();
+		Exercise1 exercise = new Exercise1();
+		exercise.run();
 	}
 
 }

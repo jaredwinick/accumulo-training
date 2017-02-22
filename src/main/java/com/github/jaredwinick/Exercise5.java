@@ -36,12 +36,13 @@ import com.google.common.io.Files;
 
 /**
  * 
- * Serializes/deserializes Tweet object to/from Accumulo
+ * Serializes/deserializes Tweet object to/from Accumulo 
+ * Also uses ColumnVisibility and client Authorizations to limit access
  *
  */
-public class Exercise3 {
+public class Exercise5 {
 	
-	private Logger log = LoggerFactory.getLogger(Exercise3.class);
+	private Logger log = LoggerFactory.getLogger(Exercise5.class);
 	
 	private Mutation tweetToMutation(final Tweet tweet) {
 		
@@ -49,7 +50,9 @@ public class Exercise3 {
 		Mutation mutation = new Mutation(tweet.getIdStr());
 		
 		// Serialize the whole Tweet object to a single Value
-		mutation.put("tweetBytes", "", new ColumnVisibility(), new Value(tweetToBytes(tweet)));
+		// Set the ColumnVisibility to the user_id of the Tweet. This could be used to limit
+		// the visibility of a user's tweets to a select number of approved followers.
+		mutation.put("tweetBytes", "", new ColumnVisibility(tweet.getUserId().toString()), new Value(tweetToBytes(tweet)));
 
 		return mutation;
 	}
@@ -90,6 +93,7 @@ public class Exercise3 {
 		
 		// Initialize MiniAccumuloCluster
 		File tempDirectory = Files.createTempDir();
+		log.info("TEMP: {}", tempDirectory.getAbsolutePath());
 		MiniAccumuloCluster accumulo = new MiniAccumuloCluster(tempDirectory, ExerciseConstants.PASSWORD);
 		accumulo.start();
 		
@@ -97,6 +101,11 @@ public class Exercise3 {
 		Instance instance = new ZooKeeperInstance(accumulo.getInstanceName(), accumulo.getZooKeepers());
 		Connector connector = instance.getConnector(ExerciseConstants.USER, new PasswordToken(ExerciseConstants.PASSWORD));
 
+		// Give the user the Authorizations they will need to scan with later. If a user attempts to scan
+		// with Authorizations they don't actually have, you will see an error like
+		//  org.apache.accumulo.core.client.AccumuloSecurityException: Error BAD_AUTHORIZATIONS
+		connector.securityOperations().changeUserAuthorizations(ExerciseConstants.USER, new Authorizations("12321"));
+		
 		// Create table for writing objects
 		connector.tableOperations().create(ExerciseConstants.RECORD_TABLE);
 		BatchWriter batchWriter = connector.createBatchWriter(ExerciseConstants.RECORD_TABLE, new BatchWriterConfig());
@@ -114,7 +123,7 @@ public class Exercise3 {
 		
 		
 		// Now read the tweets back from Accumulo and deserialize the Key/Values back to Tweet objects
-		Scanner scanner = connector.createScanner(ExerciseConstants.RECORD_TABLE, new Authorizations());
+		Scanner scanner = connector.createScanner(ExerciseConstants.RECORD_TABLE, new Authorizations("12321"));
 		scanner.setRange(new Range());
 		for (Entry<Key,Value> entry : scanner) {
 			
@@ -129,7 +138,7 @@ public class Exercise3 {
 	}
 	
 	public static void main(String[] args) throws IOException, InterruptedException, AccumuloException, AccumuloSecurityException, TableExistsException, TableNotFoundException {
-		Exercise3 exercise = new Exercise3();
+		Exercise5 exercise = new Exercise5();
 		exercise.run();
 	}
 
