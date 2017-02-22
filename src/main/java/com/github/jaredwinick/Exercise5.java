@@ -93,7 +93,6 @@ public class Exercise5 {
 		
 		// Initialize MiniAccumuloCluster
 		File tempDirectory = Files.createTempDir();
-		log.info("TEMP: {}", tempDirectory.getAbsolutePath());
 		MiniAccumuloCluster accumulo = new MiniAccumuloCluster(tempDirectory, ExerciseConstants.PASSWORD);
 		accumulo.start();
 		
