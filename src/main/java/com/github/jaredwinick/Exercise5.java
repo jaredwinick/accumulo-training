@@ -49,10 +49,10 @@ public class Exercise5 {
 		// Row will be the tweet id
 		Mutation mutation = new Mutation(tweet.getIdStr());
 		
+		// EXERCISE EXERCISE EXERCISE
 		// Serialize the whole Tweet object to a single Value
 		// Set the ColumnVisibility to the user_id of the Tweet. This could be used to limit
 		// the visibility of a user's tweets to a select number of approved followers.
-		mutation.put("tweetBytes", "", new ColumnVisibility(tweet.getUserId().toString()), new Value(tweetToBytes(tweet)));
 
 		return mutation;
 	}
@@ -120,9 +120,9 @@ public class Exercise5 {
 		batchWriter.addMutations(mutations);
 		batchWriter.flush();
 		
-		
+		// EXERCISE EXERCISE EXERCISE
 		// Now read the tweets back from Accumulo and deserialize the Key/Values back to Tweet objects
-		Scanner scanner = connector.createScanner(ExerciseConstants.RECORD_TABLE, new Authorizations("12321"));
+		Scanner scanner = null;
 		scanner.setRange(new Range());
 		for (Entry<Key,Value> entry : scanner) {
 			

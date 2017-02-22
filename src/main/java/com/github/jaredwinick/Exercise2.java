@@ -16,7 +16,6 @@ import org.apache.accumulo.core.client.TableNotFoundException;
 import org.apache.accumulo.core.client.ZooKeeperInstance;
 import org.apache.accumulo.core.client.security.tokens.PasswordToken;
 import org.apache.accumulo.core.data.Mutation;
-import org.apache.accumulo.core.security.ColumnVisibility;
 import org.apache.accumulo.minicluster.MiniAccumuloCluster;
 
 import com.github.jaredwinick.model.Tweet;
@@ -31,13 +30,11 @@ public class Exercise2 {
 	
 	private Mutation tweetToMutation(final Tweet tweet) {
 		
-		// Row will be the tweet id
-		Mutation mutation = new Mutation(tweet.getIdStr());
-		
-		mutation.put("idStr", "", new ColumnVisibility(), tweet.getIdStr());
-		mutation.put("userId", "", new ColumnVisibility(), tweet.getUserId().toString());
-		mutation.put("userName", "", new ColumnVisibility(), tweet.getUserName());
-		mutation.put("createdAt", "", new ColumnVisibility(), ((Long)tweet.getCreatedAt().getTime()).toString());		
+		// EXERCISE EXERCISE EXERCISE
+		// Row should be the Tweet.idStr
+		// Create individual Key/Values for each property of the Tweet
+		// using either the Column Family or Qualifier.
+		Mutation mutation = null;	
 		
 		return mutation;
 	}
@@ -66,9 +63,8 @@ public class Exercise2 {
 		List<Mutation> mutations = tweets.stream()
 										   .map(tweet -> tweetToMutation(tweet))
 										   .collect(Collectors.toList());									   
-		batchWriter.addMutations(mutations);
-		batchWriter.flush();
-		
+		// EXERCISE EXERCISE EXERCISE
+		// write the Mutations to Accumulo	
 		
 		// Now read the tweets back from Accumulo and just print out for verification
 		Util.printAllKeyValues(connector, ExerciseConstants.RECORD_TABLE);

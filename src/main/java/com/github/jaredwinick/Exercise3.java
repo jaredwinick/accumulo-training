@@ -45,12 +45,12 @@ public class Exercise3 {
 	
 	private Mutation tweetToMutation(final Tweet tweet) {
 		
-		// Row will be the tweet id
-		Mutation mutation = new Mutation(tweet.getIdStr());
+		// EXERCISE EXERCISE EXERCISE
+		// Row should be the Tweet.idStr
+		// Serialize the entire Tweet object as the Value
+		// See function tweetToBytes
+		Mutation mutation = null;
 		
-		// Serialize the whole Tweet object to a single Value
-		mutation.put("tweetBytes", "", new ColumnVisibility(), new Value(tweetToBytes(tweet)));
-
 		return mutation;
 	}
 	
@@ -112,16 +112,9 @@ public class Exercise3 {
 		batchWriter.addMutations(mutations);
 		batchWriter.flush();
 		
-		
+		// EXERCISE EXERCISE EXERCISE
 		// Now read the tweets back from Accumulo and deserialize the Key/Values back to Tweet objects
-		Scanner scanner = connector.createScanner(ExerciseConstants.RECORD_TABLE, new Authorizations());
-		scanner.setRange(new Range());
-		for (Entry<Key,Value> entry : scanner) {
-			
-		    Tweet tweet = bytesToTweet(entry.getValue().get());
-		    log.info("Read tweet with id: {}", tweet.getIdStr());
-
-		}
+		// Print out all the Tweet idStrs here
 		
 		// Clean up
 		accumulo.stop();

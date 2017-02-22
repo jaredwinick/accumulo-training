@@ -62,12 +62,13 @@ public class Exercise4 {
 
 	private Mutation tweetToIndexMutation(final Pair<String, Tweet> tweetWithRecordId) {
 
-		// Create indexes just on the tweet id for now
+		// EXERCISE EXERCISE EXERCISE
+		// Create indexes just on the Tweet idStr for now. Use tweetWithRecordId.getSecond().getIdStr()
+		// with the StringLexicoder
 		StringLexicoder stringLexicoder = new StringLexicoder();
-		Mutation mutation = new Mutation(stringLexicoder.encode(tweetWithRecordId.getSecond().getIdStr()));
+		Mutation mutation = null;
 
 		// now put the field name as the CF, record id in as the CQ and an empty Value.
-		mutation.put("idStr", tweetWithRecordId.getFirst(), new ColumnVisibility(), new Value());
 
 		return mutation;
 	}
@@ -154,12 +155,12 @@ public class Exercise4 {
 		Util.printAllKeyValues(connector, ExerciseConstants.INDEX_TABLE);
 		Util.printAllKeyValues(connector, ExerciseConstants.RECORD_TABLE);
 
+		// EXERCISE EXERCISE EXERCISE
 		// Now search for the Tweet with the given id using our index table
 		// Reference https://accumulo.apache.org/1.7/accumulo_user_manual.html#_indexing
 		String searchTerm = "114749583439036416";
 		StringLexicoder stringLexicoder = new StringLexicoder();
-		Scanner indexScanner = connector.createScanner(ExerciseConstants.INDEX_TABLE, new Authorizations());
-		indexScanner.setRange(Range.exact(new Text(stringLexicoder.encode(searchTerm))));
+		Scanner indexScanner = null;
 		
 		// Build a set of record ids based on index hits
 		Set<Range> matchingRows = new HashSet<Range>();
