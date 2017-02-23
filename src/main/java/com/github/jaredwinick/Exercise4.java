@@ -162,16 +162,15 @@ public class Exercise4 {
 		StringLexicoder stringLexicoder = new StringLexicoder();
 		Scanner indexScanner = null;
 		
+		// EXERCISE EXERCISE EXERCISE
 		// Build a set of record ids based on index hits
 		Set<Range> matchingRows = new HashSet<Range>();
-		for(Entry<Key,Value> entry : indexScanner) {
-		    matchingRows.add(new Range(entry.getKey().getColumnQualifier()));
-		}
 		
-		// Fetch all the matching records
-		BatchScanner recordBatchScanner = connector.createBatchScanner(
-				ExerciseConstants.RECORD_TABLE, new Authorizations(), 10);
-		recordBatchScanner.setRanges(matchingRows);
+		// EXERCISE EXERCISE EXERCISE
+		// Creat a BatchScanner to scan the record table and to
+		// fetch all the matching records
+		BatchScanner recordBatchScanner = null;
+		
 		for(Entry<Key,Value> entry : recordBatchScanner) {
 		   
 			// Deserialize the record table value 

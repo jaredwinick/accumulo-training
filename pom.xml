@@ -13,6 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<accumulo.version>1.7.2</accumulo.version>
+		<spark.version>1.6.2</spark.version>
 	</properties>
 
 	<build>
@@ -50,6 +51,12 @@
 			<artifactId>accumulo-minicluster</artifactId>
 			<version>${accumulo.version}</version>
 		</dependency>
+		
+		<dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_2.10</artifactId>
+      <version>${spark.version}</version>
+    </dependency>
 		
 		<dependency>
 			<groupId>junit</groupId>
